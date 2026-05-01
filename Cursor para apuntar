@@ -1,0 +1,35 @@
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local Player = game.Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+
+-- Limpiar si ya existe
+if PlayerGui:FindFirstChild("CursorWayer") then
+    PlayerGui.CursorWayer:Destroy()
+end
+
+-- Crear Interfaz
+local sg = Instance.new("ScreenGui")
+sg.Name = "CursorWayer"
+sg.IgnoreGuiInset = true
+sg.DisplayOrder = 999
+sg.Parent = PlayerGui
+
+-- Crear el Círculo Blanco (como tu imagen)
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 20, 0, 20) -- Tamaño del círculo
+frame.AnchorPoint = Vector2.new(0.5, 0.5)
+frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+frame.BorderSizePixel = 0
+frame.Parent = sg
+
+-- Hacerlo circular
+local corner = Instance.new("UICorner")
+corner.CornerRadius = Tool.new(1, 0) -- Esto lo hace un círculo perfecto
+corner.Parent = frame
+
+-- Movimiento suave para celular
+RunService.RenderStepped:Connect(function()
+    local mousePos = UserInputService:GetMouseLocation()
+    frame.Position = UDim2.new(0, mousePos.X, 0, mousePos.Y)
+end)
